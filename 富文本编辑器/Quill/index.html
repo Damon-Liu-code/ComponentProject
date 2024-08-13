@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <link href="css/quill.snow.css" rel="stylesheet">
+    <style>
+        /* 样式用于编辑器容器 */
+        .editor-container {
+            width: 80%;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="editor-container">
+        <div id="editor">
+            <p>这是一个可编辑的文本框。在这里，您可以编辑文本并使用格式控件。</p>
+        </div>
+    </div>
+
+    <script src="js/quill.js"></script>
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            modules: {
+                toolbar: [
+                    [{ 'font': [] }, { 'size': [] }],
+                    ['bold', 'italic', 'underline'],
+                    [{ 'color': [] }, { 'background': [] }],
+                    [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                    ['link'],
+                    ['image'],
+                ]
+            },
+        });
+    </script>
+</body>
+</html>

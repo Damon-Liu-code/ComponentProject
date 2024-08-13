@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>加载转圈</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background: linear-gradient(135deg, #1f4037 0%, #99f2c8 100%);
+            color: #ffffff;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .export-button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #ff5733;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .export-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background-color: #ff6b6b;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .loading-animation {
+            width: 80px;
+            height: 80px;
+            background: conic-gradient(from 0deg at 50% 50%, #ff6f61 0%, #f44336 100%);
+            border-radius: 50%;
+            position: relative;
+            animation: spin 1.5s linear infinite;
+        }
+
+        .loading-animation::before, .loading-animation::after {
+            content: '';
+            position: absolute;
+            inset: 6px;
+            background-color: #1f1f1f;
+            border-radius: 50%;
+        }
+
+        .loading-animation::before {
+            inset: 10px;
+            background: radial-gradient(circle at center, #1f1f1f 0%, #2e2e2e 100%);
+            animation: pulse 1.5s ease-in-out infinite;
+        }
+
+        .loading-text {
+            margin-top: 20px;
+            font-size: 20px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: flicker 2s infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="export-button" onclick="exportData()">导出数据</button>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div>
+            <div class="loading-animation"></div>
+            <div class="loading-text">请稍候...</div>
+        </div>
+    </div>
+
+    <script>
+        function exportData() {
+            // 显示等待动画
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'flex';
+
+            // 模拟加载时间
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert('数据导出完成');
+                document.querySelector('.container').style.display = 'block';
+            }, 5000); // 这里模拟5秒的导出时间
+        }
+    </script>
+</body>
+</html>

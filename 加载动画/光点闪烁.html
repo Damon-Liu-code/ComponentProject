@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>光点闪烁</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #e3f2fd;
+            color: #0d47a1;
+        }
+
+        .container {
+            text-align: center;
+        }
+
+        .export-button {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #1976d2;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+            transition: all 0.3s ease-in-out;
+        }
+
+        .export-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            background-color: #1565c0;
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            flex-direction: column;
+        }
+
+        .circle-container {
+            position: relative;
+            width: 100px;
+            height: 100px;
+        }
+
+        .circle {
+            position: absolute;
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 2px solid #2196f3;
+            animation: rotate-circle 3s infinite linear;
+        }
+
+        .dot {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: #82b1ff;
+            border-radius: 50%;
+            top: -7.5px;
+            left: 42.5px;
+            animation: flash-dot 1s infinite ease-in-out alternate;
+        }
+
+        .dot:nth-child(2) { animation-delay: 0.3s; }
+        .dot:nth-child(3) { animation-delay: 0.6s; }
+        .dot:nth-child(4) { animation-delay: 0.9s; }
+
+        .loading-text {
+            margin-top: 30px;
+            font-size: 24px;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #82b1ff;
+        }
+
+        @keyframes rotate-circle {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @keyframes flash-dot {
+            0% { opacity: 0.1; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <button class="export-button" onclick="exportData()">导出数据</button>
+    </div>
+
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="circle-container">
+            <div class="circle">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+        </div>
+        <div class="loading-text">加载中...</div>
+    </div>
+
+    <script>
+        function exportData() {
+            // 隐藏按钮，显示加载动画
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('loadingOverlay').style.display = 'flex';
+            
+            // 模拟加载时间
+            setTimeout(function() {
+                document.getElementById('loadingOverlay').style.display = 'none';
+                alert('数据导出完成');
+                document.querySelector('.container').style.display = 'block';
+            }, 5000); // 模拟5秒的加载时间
+        }
+    </script>
+</body>
+</html>

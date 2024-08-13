@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视频播放页面</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+
+        #video-container {
+            position: relative;
+        }
+
+        #progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 4px;
+            background-color: #3498db;
+        }
+
+        #total-play-time {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div id="video-container">
+        <video id="myVideo" width="640" height="360" controls>
+            <source src="video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div id="progress-bar"></div>
+        <div id="total-play-time">Total Play Time: <span id="total-play-time-value">0:00</span></div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script>
+        const video = document.getElementById('myVideo');
+        const progressBar = document.getElementById('progress-bar');
+        const totalPlayTimeValue = $('#total-play-time-value');
+        let totalPlayTime = 0;
+        let playTimeUpdater; // Variable to store the interval ID
+
+        video.addEventListener('timeupdate', function () {
+            // Update progress bar based on video's current time
+            const progress = (video.currentTime / video.duration) * 100;
+            progressBar.style.width = `${progress}%`;
+
+            // Check if the progress is at the maximum
+            if (video.currentTime === video.duration) {
+                // Simulate storing the current progress on the backend
+                saveProgress(video.currentTime);
+            }
+        });
+
+        video.addEventListener('play', function () {
+            // Start updating total play time every second
+            playTimeUpdater = setInterval(updateTotalPlayTime, 1000);
+        });
+
+        video.addEventListener('pause', function () {
+            // Stop updating total play time when video is paused
+            clearInterval(playTimeUpdater);
+        });
+
+        function updateTotalPlayTime() {
+            totalPlayTime += 1;
+            const minutes = Math.floor(totalPlayTime / 60);
+            const seconds = totalPlayTime % 60;
+            totalPlayTimeValue.text(`${minutes}:${seconds < 10 ? '0' : ''}${seconds}`);
+        }
+
+        function saveProgress(progress) {
+            // Simulate an API call to save progress on the backend
+            fetch('/api/saveProgress', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ progress }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Progress saved:', data);
+            })
+            .catch(error => {
+                console.error('Error saving progress:', error);
+            });
+        }
+    </script>
+</body>
+</html>
